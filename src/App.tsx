@@ -148,7 +148,7 @@ function App() {
     if (startError) { setError('Oyun başlatılamadı.'); return; }
   };
 
-  const leaveRoom = async () => { if (room && myPlayer) await supabase.from('okey_players').delete().eq('id', myPlayer.id); setRoom(null); setPlayers([]); setGame(null); setScreen('home'); };
+  const leaveRoom = async () => { if (myPlayer) await supabase.rpc('leave_okey_room', { p_player_id: myPlayer.id, p_player_token: myPlayer.player_token }); setRoom(null); setPlayers([]); setGame(null); setMyPlayer(null); setScreen('home'); };
   const copyInvite = async () => { if (!room) return; await navigator.clipboard?.writeText(`${window.location.origin}/room/${room.code}`); setCopied(true); window.setTimeout(() => setCopied(false), 1600); };
 
   if (!authReady) return <main className="home-shell"><div className="loading-screen">Masaya bağlanılıyor...</div></main>;
